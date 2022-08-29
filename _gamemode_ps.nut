@@ -1,5 +1,6 @@
 untyped
 global function GamemodePs_Init
+global function TeamGGWeaponArray
 
 struct Weapon {
     string name
@@ -175,15 +176,16 @@ void function UpdateLoadout(entity player) {
     }
 
     if (weapon.isOffhand) {
-        entity oldOffhandWeapon = player.GetOffhandWeapon(OFFHAND_RIGHT)
+        //the abilities are keept in OFFHAND_LEFT and stay there since I like the pulse blade on Q I move the granade to C and keep the abilitie
+        entity oldGrenade = player.GetOffhandWeapon(OFFHAND_RIGHT)
         foreach (entity offhandWeapon in player.GetOffhandWeapons()) {
             player.TakeWeaponNow(offhandWeapon.GetWeaponClassName())
         }
-        if (oldOffhandWeapon != null) {
-            player.GiveOffhandWeapon(oldOffhandWeapon.GetWeaponClassName(), OFFHAND_RIGHT, [])
+        if (oldGrenade != null) {
+            player.GiveOffhandWeapon(oldGrenade.GetWeaponClassName(), OFFHAND_INVENTORY, [])
         }
 
-        player.GiveOffhandWeapon(weapon.name, OFFHAND_LEFT, weapon.mods)
+        player.GiveOffhandWeapon(weapon.name, OFFHAND_RIGHT, weapon.mods)
         player.GiveOffhandWeapon("melee_pilot_emptyhanded", OFFHAND_MELEE, ["allow_as_primary"])
         player.SetActiveWeaponByName("melee_pilot_emptyhanded")
     } else {
@@ -228,4 +230,8 @@ void function PrintKillsForNextLoadout(int team) {
     foreach (entity player in GetPlayerArrayOfTeam(team)) {
         SendHudMessage(player, message, -0.925, 0.4, 220, 224, 255, 255, 0.15, 9999, 1)
     }
+}
+
+array<Weapon> function TeamGGWeaponArray(){
+    return file.weapons
 }
