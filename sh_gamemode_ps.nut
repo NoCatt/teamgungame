@@ -7,7 +7,7 @@ void function GamemodePsShared_Init()
 	#if CLIENT
 	AddCallback_GameStateEnter( eGameState.Postmatch, DisplayPostMatchTop3 )
 	#endif
-	GameMode_SetDefaultScoreLimits( GAMEMODE_PS, file.weapons.len(), 0 )
+	GameMode_SetDefaultScoreLimits( GAMEMODE_PS, TeamGGWeaponArray.len(), 0 )
 }
 
 void function PS_SetScoreEventOverride()
